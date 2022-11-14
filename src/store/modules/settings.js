@@ -4,7 +4,7 @@ import defaultSettings from '@/settings'
 const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
-  // showSettings: showSettings,
+  showSettings: showSettings,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo
 }

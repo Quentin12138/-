@@ -1,10 +1,13 @@
 'use strict'
 const path = require('path')
+// const { env } = require('process')
 const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+
+// console.log(process.env.abc, '测试环境')
 
 // 设置浏览器标签栏的 title
 const name = defaultSettings.title || 'vue Admin Template' // page title
@@ -32,8 +35,10 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    // 代理服务器
+    // 在【浏览器中】发起了【ajax请求】触发了【同源策略】就会出现跨域
     proxy: {
-      // 当检测到、api的时候就会将请求代理转发到http://ihrm.itheima.net
+      // 当检测到/api的时候就会将请求代理转发到http://ihrm.itheima.net
       '/api': {
         target: 'http://ihrm.itheima.net',
         // 是否开启跨域
@@ -61,7 +66,7 @@ module.exports = {
       }
     ])
     // 配置cdn
-    
+
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 

@@ -2,6 +2,7 @@
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <!-- router-view 绑定 key 的原因：https://blog.csdn.net/Terenceno/article/details/90033967 -->
+      <!-- 二级路由挂载点 挂在二级路由children的component -->
       <router-view :key="key" />
     </transition>
   </section>
@@ -26,7 +27,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 </style>

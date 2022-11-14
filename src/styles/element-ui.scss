@@ -45,5 +45,7 @@
 
 // to fix el-date-picker css style
 .el-range-separator {
+  // box-sizing改变盒模型
+  // content-box标准盒模型 宽高就是内容宽高
   box-sizing: content-box;
 }
