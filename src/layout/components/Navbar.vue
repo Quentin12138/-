@@ -20,9 +20,11 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 用户头像 -->
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <!-- :src="$store.state.user.userInfo.staffPhoto" -->
+          <!-- 使用vuex中的计算属性 优化取值 -->
+          <img :src="$store.getters.staffPhoto" class="user-avatar">
           <!-- 用户名称 -->
-          <span class="name">赵阳老师</span>
+          <span class="name">{{ $store.getters.userName }}</span>
           <i class="el-icon-caret-bottom" style="color:#fff" />
         </div>
         <!-- 下拉内容 -->
@@ -66,7 +68,24 @@ export default {
     },
     // 退出登录
     logout() {
-      this.$router.push('/login')
+      this.$confirm('是否退出登录', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 清除token 然后再跳转
+        this.$store.commit('user/REMOVE_TOKEN')
+        this.$router.push('/login')
+        this.$message({
+          type: 'success',
+          message: '退出登录成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出登录'
+        })
+      })
     }
   }
 }

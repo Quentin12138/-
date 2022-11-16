@@ -14,3 +14,17 @@ export function login(data) {
     data
   })
 }
+// 获取用户基本信息
+export function getProfile() {
+  return request({
+    url: '/sys/profile',
+    method: 'POST'
+  })
+}
+// 获取用户基本信息
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'GET'
+  })
+}

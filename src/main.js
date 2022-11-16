@@ -14,6 +14,8 @@ import App from './App'
 import store from './store'
 
 import router from './router'
+// 引入权限模块
+import './permission'
 
 import '@/icons' // icon
 

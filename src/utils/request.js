@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import store from '@/store'
+import router from '@/router'
 
 const request = axios.create({
   // 项目的基地址
@@ -20,8 +22,16 @@ const request = axios.create({
 // 请求拦截器
 // 在请求发起之前执行
 // 在headers上绑定 token
+
+// 在使用请求拦截器一定要将config return
 request.interceptors.request.use(
   config => {
+    const token = store.state.user.token
+    console.log(123)
+    // 判断  当headers上没有Authorization字段并且是有值的情况下给请求头添加token
+    if (!config.headers.Authorization && token) {
+      config.headers.Authorization = 'Bearer ' + token
+    }
     return config
   },
   error => {
@@ -50,6 +60,12 @@ request.interceptors.response.use(
     // 因为axios会在请求返回的结果外层波过一个data 所以在相应拦截器中将response.data返回
   },
   error => {
+    console.dir(error)
+    // 当token过期，接口的状态码会返回401 判断401为true 则退出
+    if (error.response.status === 401) {
+      store.commit('user/REMOVE_TOKEN')
+      router.push('./')
+    }
     return Promise.reject(error)
   }
 )
