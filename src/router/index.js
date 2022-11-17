@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { asyncRoutes } from './asyncRoutes'
+
 Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
+// 静态路由
 export const constantRoutes = [
   // 登录页面
   {
@@ -17,6 +19,12 @@ export const constantRoutes = [
   {
     path: '/404',
     component: () => import('@/views/404'),
+    hidden: true
+  },
+  // demo 页面
+  {
+    path: '/demo',
+    component: () => import('@/views/demo'),
     hidden: true
   },
   // 首页
@@ -32,17 +40,6 @@ export const constantRoutes = [
       component: () => import('@/views/Dashboard/index'),
       // 路由元数据 定义了路由的名字  路由的图标
       meta: { title: '首页', icon: 'dashboard' }
-    }]
-  },
-  // 工资管理页面
-  {
-    path: '/salarys',
-    component: Layout,
-    children: [{
-      path: '', // 如果children path置空的话 当前这个路由会作为一级渲染的默认路由
-      name: 'salarys',
-      component: () => import('@/views/Salary'),
-      meta: { title: '工资管理', icon: 'skill' }
     }]
   }
 ]
@@ -60,7 +57,7 @@ const createRouter = () => new Router({
   // 只在浏览器支持pushState的情况下生效
   scrollBehavior: () => ({ y: 0 }),
   // 将定义好的路由数据 添加到路由实例上
-  routes: constantRoutes
+  routes: [...constantRoutes, ...asyncRoutes]
 })
 
 const router = createRouter()

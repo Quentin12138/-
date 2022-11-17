@@ -28,7 +28,12 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // 获取用户的基本资料应该在用户登录之后进行
       // 让用户进入每个页面都能获取用户的基本资料
-      await store.dispatch('user/fetchUserInfo')
+
+      // 判断vuex里是否有用户信息，没有就请求接口
+      if (!store.state.user.userInfo.username) {
+        await store.dispatch('user/fetchUserInfo')
+      }
+
       console.log(store.state.user.userInfo)
       next()
     }
