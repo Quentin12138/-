@@ -22,7 +22,6 @@ function findSon(arr, id) {
   const resultArr = []
   // 逻辑
   arr.forEach(item => {
-    console.log(item)
     if (item.pid === id) {
       resultArr.push(item)
       const children = findSon(arr, item.id)
