@@ -17,7 +17,6 @@ router.beforeEach(async(to, from, next) => {
   NProgress.start()
   const token = store.state.user.token
   if (token) {
-    console.log(to)
     if (to.path === '/login') {
       next('/')
       // 因为路由守卫逆序是按照同一个路由成对出现的
@@ -34,7 +33,7 @@ router.beforeEach(async(to, from, next) => {
         await store.dispatch('user/fetchUserInfo')
       }
 
-      console.log(store.state.user.userInfo)
+      // console.log(store.state.user.userInfo)
       next()
     }
   } else {

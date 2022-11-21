@@ -21,7 +21,7 @@
               如果组件内没有定义一个同名的自定义事件 这个原生事件就不会生效
               可以加上一个事件修饰符 native 表示当前事件为原生事件 -->
               <el-dropdown-item @click.native="addDep">添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot">编辑部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" @click.native="editDep">编辑部门</el-dropdown-item>
               <el-dropdown-item v-if="!isRoot" @click.native="delDep">删除部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -61,6 +61,9 @@ export default {
     },
     delDep() {
       this.$emit('delDep', this.nodeData)
+    },
+    editDep() {
+      this.$emit('editDep', this.nodeData)
     }
   }
 }

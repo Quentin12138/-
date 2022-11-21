@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const getDepartmentList = () => {
   return request({
     url: '/company/department',
-    mtthod: 'GTE'
+    method: 'GET'
   })
 }
 // 新增部门
@@ -15,10 +15,25 @@ export const addDepartment = (data) => {
     data
   })
 }
-// 新增部门
+// 删除部门
 export const delDepartment = (id) => {
   return request({
     url: `/company/department/${id}`,
     method: 'DELETE'
+  })
+}
+// 获取部门
+export const getDepartment = (id) => {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'GET'
+  })
+}
+// 获取部门
+export const editDepartment = (data) => {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'PUT',
+    data
   })
 }

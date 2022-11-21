@@ -27,7 +27,7 @@ const request = axios.create({
 request.interceptors.request.use(
   config => {
     const token = store.state.user.token
-    console.log(123)
+    // console.log(123)
     // 判断  当headers上没有Authorization字段并且是有值的情况下给请求头添加token
     if (!config.headers.Authorization && token) {
       config.headers.Authorization = 'Bearer ' + token

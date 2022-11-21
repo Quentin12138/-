@@ -19,14 +19,14 @@
         <tree-tools :node-data="company" :is-root="true" @addDep="addDep" />
         <el-tree :data="list" :props="defaultProps" default-expand-all>
           <template #default="{ data }">
-            <tree-tools :node-data="data" @addDep="addDep" @delDep="delDep" />
+            <tree-tools :node-data="data" @addDep="addDep" @delDep="delDep" @editDep="editDep" />
           </template>
         </el-tree>
       </el-card>
     </div>
     <!-- el-dialog组件一般放在根标签的末尾 -->
     <el-dialog
-      title="提示"
+      :title="departForm.id ? '编辑部门' : '添加子部门'"
       :visible.sync="dialogVisible"
       width="40%"
       @open="dialogOpen"
@@ -65,7 +65,7 @@
 
 <script>
 import treeTools from './components/tree-tools.vue'
-import { getDepartmentList, getSimpliList, addDepartment, delDepartment } from '@/api'
+import { getDepartmentList, getSimpliList, addDepartment, delDepartment, editDepartment, getDepartment } from '@/api'
 import findSon from '@/utils/findSon'
 export default {
   components: {
@@ -74,21 +74,39 @@ export default {
   data() {
     // 自定义校验项
     // 同级部门不能出现相同的部门名称
-    const validateName = (rulem, value, callback) => {
+    const validateName = (rules, value, callback) => {
+      let broArr = []
+      if (this.departForm.id) {
+        // 当前是编辑状态
+        if (this.currentNode.name === value) {
+          // 并且没有修改过部门名称
+          callback()
+          return
+        } else {
+          // 如果修改了部门名称
+          broArr = this.originList.filter(item => this.currentNode.pid === item.pid)
+        }
+      } else {
+        broArr = this.originList.filter(item => this.currentNode.id === item.pid)
+      }
       // 1、先找到添加子部门元素下的所有其他子部门
-      const broArr = this.originList.filter(item => this.currentNode.id === item.pid)
+      // const broArr = this.originList.filter(item => this.currentNode.id === item.pid)
       // 当前数据的值value不能和broArr中任意一个元素中的name字段一致
-      const isSnme = broArr.some(item => item.name === value)
-      if (isSnme) {
-        callback(`同级部门下已经有${value}这个部门了`)
+      const isSame = broArr.some(item => item.name === value)
+      if (isSame) {
+        callback(new Error(`同级部门下已经有${value}这个部门了`))
       } else {
         callback()
       }
     }
     // 部门编码不能和其他任何部门一致
-    const validateCode = (rulem, value, callback) => {
+    const validateCode = (rules, value, callback) => {
+      if (this.departForm.id && this.currentNode.code === value) {
+        callback()
+        return
+      }
       if (this.originList.some(item => item.code === value)) {
-        callback('部门编码不能和其他任何部门一致')
+        callback(new Error('部门编码不能和其他任何部门一致'))
       } else {
         callback()
       }
@@ -134,13 +152,15 @@ export default {
       }
     }
   },
+  computed: {
+
+  },
   created() {
     this.fetchDepartmentList()
   },
   methods: {
     async fetchDepartmentList() {
       const res = await getDepartmentList()
-      console.log(res)
       this.list = findSon(res.data.depts, '')
       this.company.name = res.data.companyName
       // 获取原始数据
@@ -153,7 +173,6 @@ export default {
     },
     async dialogOpen() {
       const { data } = await getSimpliList()
-      console.log(data)
       this.employeeList = data
     },
     // 关闭弹窗时的回调
@@ -175,12 +194,19 @@ export default {
       // 9、表单的数据和校验的重置
       this.$refs.departRef.validate(async(valid) => {
         if (!valid) return false
-        await addDepartment({
-          ...this.departForm,
-          pid: this.currentNode.id
-        })
+        if (this.departForm.id) {
+          // 编辑
+          await editDepartment(this.departForm)
+        } else {
+          // 新增
+          await addDepartment({
+            ...this.departForm,
+            pid: this.currentNode.id
+          })
+        }
+
         this.closeDialog()
-        this.$message.success('新增部门成功')
+        this.$message.success(this.departForm.id ? '编辑部门成功' : '添加子部门成功')
         this.fetchDepartmentList()
       })
     },
@@ -204,6 +230,21 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    // 修改部门
+    async editDep(val) {
+      // 1、编辑功能复用了新增的弹窗
+      // 2、点击编辑按钮 触发绑定的点击事件 通知父组件
+      // 3、父组件中接收子传父事件 显示新增弹窗
+      // 4、在打开弹窗的时候需要调用获取详情数据的接口，对表单做赋值回显
+      // 5、 处理编辑逻辑和新增逻辑的不同  可以根据是否有id判断是新增还是编辑
+      // 6、对校验逻辑，标题，提交之后的提示，提交接口进行修改
+      // 7、 定义接口，接口引入，接口调用
+      // 8、关闭弹窗、提示用户、清空表单数据和校验、重新渲染页面
+      this.currentNode = val
+      const { data } = await getDepartment(val.id)
+      this.departForm = data
+      this.dialogVisible = true
     }
   }
 
