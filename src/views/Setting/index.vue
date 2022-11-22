@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getRoleList, addRole, getRoleDetail, editRoleDetail } from '@/api'
+import { getRoleList, addRole, getRoleDetail, editRoleDetail, delRole } from '@/api'
 export default {
   data() {
     return {
@@ -130,10 +130,26 @@ export default {
         const { data } = await getRoleDetail(id)
         this.roleForm = data
       }
+    },
+    del(id) {
+      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await delRole(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.fetchRoleList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
-    // del(id){
-
-    // }
   }
 }
 </script>
