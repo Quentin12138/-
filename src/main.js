@@ -2,6 +2,7 @@ import Vue from 'vue'
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+// import PageTools from '@/components/PageTools'// 引入组件
 
 // 1、重置浏览器样式
 // 2、定义全局的css变量
@@ -19,7 +20,12 @@ import './permission'
 
 import '@/icons' // icon
 
+import componentPlugin from '@/components'
+Vue.use(componentPlugin)
 Vue.use(ElementUI)
+
+// 全局组件的注册
+// Vue.component('PageTools', PageTools)
 
 Vue.config.productionTip = false
 
