@@ -41,6 +41,31 @@ export const constantRoutes = [
       // 路由元数据 定义了路由的名字  路由的图标
       meta: { title: '首页', icon: 'dashboard' }
     }]
+  },
+  {
+    path: '/import',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '',
+      component: () => import('@/views/importExcel/index.vue'),
+      meta: { title: '表格导入' }
+    }]
+  },
+  {
+
+    path: '/employeeDetail',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '',
+      component: () => import('@/views/Employee/detail.vue'),
+      meta: {
+        title: '员工详情',
+        // 进入当前页面 需要激活的菜单
+        activeMenu: './emlpoyee'
+      }
+    }]
   }
 ]
 

@@ -9,8 +9,8 @@
           </div>
         </template>
         <template #right>
-          <el-button type="danger" size="small">普通excel导出</el-button>
-          <el-button type="success" size="small">excel导入</el-button>
+          <el-button type="danger" size="small" @click="handleDownoad">普通excel导出</el-button>
+          <el-button type="success" size="small" @click="$router.push('/import')">excel导入</el-button>
           <el-button type="primary" size="small" @click="showDialog">新增员工</el-button>
         </template>
       </PageTools>
@@ -33,10 +33,10 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="200">
-            <template>
-              <el-button type="text" size="small">查看</el-button>
+            <template #default="{row}">
+              <el-button type="text" size="small" @click="toDetail(row.id)">查看</el-button>
               <el-button type="text" size="small">分配角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="del(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,7 +59,7 @@
 
 <script>
 // import PageTools from '@/components/PageTools'
-import { getEmployeeList } from '@/api'
+import { getEmployeeList, delEmployee } from '@/api'
 import dayjs from 'dayjs'
 import addEmployee from './components/add-employee.vue'
 export default {
@@ -108,6 +108,104 @@ export default {
     },
     close() {
       this.dialogVisible = false
+    },
+    // 删除员工
+    del(row) {
+      this.$confirm('此操作将永久删除该员工, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await delEmployee(row.id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        if (this.params.page > 1 && this.list.length === 1) {
+          this.params.page--
+        }
+        this.fetchEmpolyeeList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    handleDownoad() {
+      // 当handLeDownload方法被调用的时候才会将@/vendor/Export2Excel引入进来
+      // 异步引入
+      // 优点在于能够缩小首展文件的体积缩短加载时间
+      // 动态引入 @/vendor/Export2Excel 包
+      import('@/vendor/Export2Excel').then(async(excel) => {
+        // 调用员工列表接口，获取要导出的员工列表
+        const res = await getEmployeeList(this.params)
+        // 数据转换
+        // 表头
+        const headerArr = ['姓名', '手机号', '入职日期', '工号', '聘用形式', '部门']
+        // 中英对照关系
+        const headerRelation = {
+          '姓名': 'username',
+          '手机号': 'mobile',
+          '入职日期': 'timeOfEntry',
+          '工号': 'workNumber',
+          '聘用形式': 'formOfEmployment',
+          '部门': 'departmentName'
+        }
+        // 根据员工列表数据、表头、中英文对应关系，将数据转换成二维数组
+        const twoArr = this.getExportData(res.data.rows, headerArr, headerRelation)
+        // 导出
+
+        // excel：是 @/vendor/Export2Excel 包中的 excel 导出模块
+   		// export_json_to_excel：将 json 数据转换为 excel
+        excel.export_json_to_excel({
+        // 表头 header 必填，是一个数组
+          header: headerArr,
+          // 表格 body 具体数据，是一个二维数组
+          data: twoArr,
+          filename: 'excel-list', // 文件名称
+          autoWidth: true, // 宽度是否自适应
+          bookType: 'xlsx' // 生成的文件类型
+        })
+      })
+    },
+    // 表格导出数据处理
+    getExportData(arr, headerArr, headerRelation) {
+    //  [{}, {}, {}] => [[]， []，[]]
+    // 1、定义一个结果数据towArr
+    // 2、将原始数据遍历获取到其中的每一 项对象item
+    // 3、定义一个二维数组中的字数组，
+    // 4、便利headerArr 获取表格中需要展示的数组字段
+    // 5、通过headerRe lat ion将中文的key转换成英文的key
+    // 6、通过item[key] 获取到每一 个字段的value再将这个value push到子数组arr中
+    // 7、将子数组push到towArr完成数据拼装
+      const twoArr = []
+      const hireMap = {
+        1: '正式',
+        2: '非正式'
+      }
+      arr.forEach(item => {
+        const arr = []
+        headerArr.forEach(key => {
+          const englishKey = headerRelation[key]
+          if (englishKey === 'formOfEmployment') {
+            arr.push(hireMap[+item[englishKey]])
+          } else {
+            arr.push(item[englishKey])
+          }
+        })
+        twoArr.push(arr)
+      })
+      console.log(twoArr)
+      return twoArr
+    },
+    toDetail(id) {
+      this.$router.push({
+        path: '/employeeDetail',
+        query: {
+          id
+        }
+      })
     }
   }
 }

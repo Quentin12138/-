@@ -23,3 +23,27 @@ export const addEmployee = (data) => {
     data
   })
 }
+// 删除员工
+export const delEmployee = (id) => {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'DELETE'
+  })
+}
+
+// 批量导入员工
+export const batch = (data) => {
+  return request({
+    url: `/sys/user/batch`,
+    method: 'POST',
+    data
+  })
+}
+
+// 删除员工
+export const getUserdetailByid = (id) => {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'GET'
+  })
+}
