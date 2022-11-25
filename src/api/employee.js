@@ -47,3 +47,12 @@ export const getUserdetailByid = (id) => {
     method: 'GET'
   })
 }
+
+// 保存员工基本信息
+export const updateEmployee = (data) => {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'PUT',
+    data
+  })
+}

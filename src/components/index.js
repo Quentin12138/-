@@ -4,10 +4,12 @@
 // 如果是方法会将这个方法当作install方法执行
 import PageTools from './PageTools'
 import UploadExcel from './UploadExcel'
+import UploadImg from './UploadImg'
 const componentPlugin = {
   install: (Vue) => {
     Vue.component('PageTools', PageTools)
     Vue.component('UploadExcel', UploadExcel)
+    Vue.component('UploadImg', UploadImg)
   }
 }
 

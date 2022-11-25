@@ -18,7 +18,11 @@
         <el-table :data="list" border>
           <el-table-column label="序号" width="60" type="index" />
           <el-table-column label="姓名" sortable prop="username" />
-          <el-table-column label="头像" prop="staffPhoto" />
+          <el-table-column label="头像" width="100">
+            <template #default="{row}">
+              <img :src="row.staffPhoto" alt="" style="width:60px;height:60px;border-radius:50%">
+            </template>
+          </el-table-column>
           <el-table-column label="手机号" sortable prop="mobile" />
           <el-table-column label="工号" sortable prop="workNumber" />
           <el-table-column label="聘用形式" sortable>
@@ -157,7 +161,7 @@ export default {
         // 导出
 
         // excel：是 @/vendor/Export2Excel 包中的 excel 导出模块
-   		// export_json_to_excel：将 json 数据转换为 excel
+   		  // export_json_to_excel：将 json 数据转换为 excel
         excel.export_json_to_excel({
         // 表头 header 必填，是一个数组
           header: headerArr,

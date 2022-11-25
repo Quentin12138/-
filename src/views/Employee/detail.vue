@@ -19,12 +19,18 @@
             />
           </el-form-item>
 
-          <el-form-item label="员工头像" />
+          <el-form-item label="员工头像">
+            <!-- v-mode L指令可以使用到自定义组件上实现父子之间的双向数据绑方
+            即父组件的值发生改变子组件可以接受的到
+            子组件中的值发生改变父组件也可以接受到 -->
+            <!-- <UploadImg :img-url="userInfoForm.staffPhoto" @upload="upload" /> -->
+            <UploadImg v-model="userInfoForm.staffPhoto" />
+          </el-form-item>
 
           <!-- 保存个人信息 -->
           <el-row class="inline-info" type="flex" justify="center">
             <el-col :span="12">
-              <el-button type="primary">保存更新</el-button>
+              <el-button type="primary" @click="submit">保存更新</el-button>
               <el-button @click="$router.back()">返回</el-button>
             </el-col>
           </el-row>
@@ -34,7 +40,7 @@
 </template>
 
 <script>
-import { getUserdetailByid } from '@/api'
+import { getUserdetailByid, updateEmployee } from '@/api'
 export default {
   data() {
     return {
@@ -65,6 +71,17 @@ export default {
       // await getUserdetailByid(this.$router.currentRoute.query.id)
       const { data } = await getUserdetailByid(this.$route.query.id)
       this.userInfoForm = data
+    },
+    // 子组件传值
+    // upload(val) {
+    //   this.userInfoForm.staffPhoto = val
+    // }
+    submit() {
+      this.$refs.userInfoRef.validate(async(valid) => {
+        if (!valid) return false
+        await updateEmployee(this.userInfoForm)
+        this.$message.success('更新员工基本信息成功')
+      })
     }
   }
 }
