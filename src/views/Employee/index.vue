@@ -132,7 +132,7 @@ export default {
     },
     showDialog() {
       this.dialogVisible = true
-      console.log(this.$store.state.user.userInfo)
+      // console.log(this.$store.state.user.userInfo)
     },
     close() {
       this.dialogVisible = false

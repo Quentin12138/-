@@ -22,9 +22,10 @@
         <!-- 工作日历 -->
         <el-card class="box-card">
           <div slot="header" class="header">
-            <calendar />
+            工作日历
           </div>
           <!-- 放置日历组件 -->
+          <calendar />
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -93,6 +94,7 @@
             <span>绩效指数</span>
           </div>
           <!-- 放置雷达图 -->
+          <radar />
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -129,9 +131,10 @@
 
 <script>
 import calendar from './component/Calendar.vue'
+import radar from './component/radar.vue'
 export default {
   name: 'Dashboard',
-  components: { calendar }
+  components: { calendar, radar }
 
 }
 </script>

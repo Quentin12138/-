@@ -37,15 +37,15 @@ router.beforeEach(async(to, from, next) => {
         // 位置:在获取用户个人信息之后 跳转页面的时候处理用户权限
         // 1、获取接口数据获取动态路由数据
         const res = await store.dispatch('user/fetchUserInfo')
-        console.log(res)
+        // console.log(res)
         const menus = res.menus
-        console.log(menus, '接口返回的权限接口')
-        console.log(asyncRoutes, '需要过滤的原始动态路由')
+        // console.log(menus, '接口返回的权限接口')
+        // console.log(asyncRoutes, '需要过滤的原始动态路由')
         // 2、数据的过滤
         const filterRoutes = asyncRoutes.filter(item => {
           return menus.includes(item.children[0].name)
         })
-        console.log(filterRoutes, '过滤后的数据')
+        // console.log(filterRoutes, '过滤后的数据')
         // 3、将过滤出的动态路由放在路由实例上
         // 发现访问过滤之后的页面出现白屏没有报错也没有404
         router.addRoutes([

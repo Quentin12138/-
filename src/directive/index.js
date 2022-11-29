@@ -16,7 +16,7 @@ Vue.directive('access', {
   inserted: (el, binding) => {
     // console.log(el, '我是el')
     // console.log(binding, '我是binding')
-    if (!store.getters.roles.points.inclides(binding.value)) {
+    if (!store.getters.points.includes(binding.value)) {
       el.remove(el)
     }
   }
