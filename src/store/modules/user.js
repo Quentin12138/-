@@ -54,6 +54,7 @@ export default {
       const { data: data2 } = await getUserDetailById(data1.userId)
       // { ...data1, ...data2 } 表示将data1展开后拼接上data2展开，再用花括号包裹形成一个新对象
       store.commit('SET_USERINFO', { ...data1, ...data2 })
+      return data1.roles
     }
   }
 }

@@ -18,7 +18,7 @@
           <el-table-column label="描述" prop="description" align="center" />
           <el-table-column label="操作" width="240" fixed="right">
             <template #default="{ row }">
-              <el-button size="small">分配权限</el-button>
+              <el-button size="small" style="background-color:#f5c19b" @click="showAssignPermission(row)">分配权限</el-button>
               <el-button size="small" @click="edit(row.id)">编辑</el-button>
               <el-button size="small" type="danger" @click="del(row.id)">删除</el-button>
             </template>
@@ -53,12 +53,15 @@
         </el-button>
       </template>
     </el-dialog>
+    <assign-permission ref="assignRef" :visible="assignPermissionVisible" :current-node="currentNode" @dialog-close="dialogClose" />
   </div>
 </template>
 
 <script>
 import { getRoleList, addRole, getRoleDetail, editRoleDetail, delRole } from '@/api'
+import assignPermission from './component/assign-permission.vue'
 export default {
+  components: { assignPermission },
   data() {
     return {
       list: [],
@@ -79,7 +82,9 @@ export default {
         pagesize: 10// 一页有多少条
       },
       total: 0, // 总条数
-      dialogVisibal: false
+      dialogVisibal: false,
+      assignPermissionVisible: false,
+      currentNode: {}
     }
   },
   created() {
@@ -149,6 +154,14 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    showAssignPermission(row) {
+      this.currentNode = row
+      this.$refs.assignRef.fetchPermissionList(row.id)
+      this.assignPermissionVisible = true
+    },
+    dialogClose() {
+      this.assignPermissionVisible = false
     }
   }
 }

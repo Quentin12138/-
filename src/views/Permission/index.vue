@@ -14,19 +14,19 @@
           <el-table-column label="操作">
             <template #default="{row}">
               <el-button type="text" size="small" @click="add(2,row.id)">添加</el-button>
-              <el-button type="text" size="small">编辑</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="edit(row)">编辑</el-button>
+              <el-button type="text" size="small" @click="del(row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-card>
     </div>
-    <permission-dialog :dialog-visible="showDialog" :type="type" :pid="pid" @close="close" @update="fetchPermissionList" />
+    <permission-dialog ref="permissionRef" :dialog-visible="showDialog" :type="type" :pid="pid" @close="close" @update="fetchPermissionList" />
   </div>
 </template>
 
 <script>
-import { getPermissionList } from '@/api'
+import { getPermissionList, delPermission } from '@/api'
 import findSon from '@/utils/findSon'
 import permissionDialog from './component/permission-dialog'
 export default {
@@ -56,6 +56,30 @@ export default {
     },
     close() {
       this.showDialog = false
+    },
+    async edit(row) {
+      console.log(this.$refs.permissionRef)
+      await this.$refs.permissionRef.fetchDetail(row.id)
+      this.showDialog = true
+    },
+    del(row) {
+      this.$confirm('此操作将永久删除该权限, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        await delPermission(row.id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.fetchPermissionList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

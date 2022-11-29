@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import { asyncRoutes } from './asyncRoutes'
+// import { asyncRoutes } from './asyncRoutes'
 
 Vue.use(Router)
 
@@ -82,7 +82,8 @@ const createRouter = () => new Router({
   // 只在浏览器支持pushState的情况下生效
   scrollBehavior: () => ({ y: 0 }),
   // 将定义好的路由数据 添加到路由实例上
-  routes: [...constantRoutes, ...asyncRoutes]
+  // routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()

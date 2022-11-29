@@ -1,37 +1,268 @@
 <template>
   <div class="dashboard-container">
-    首页
-    <svg style="display: none">
-      <symbol id="404" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M121.718 73.272v9.953c3.957-7.584 6.199-16.05 6.199-24.995C127.917 26.079 99.273 0 63.958 0 28.644 0 0 26.079 0 58.23c0 .403.028.806.028 1.21l22.97-25.953h13.34l-19.76 27.187h6.42V53.77l13.728-19.477v49.361H22.998V73.272H2.158c5.951 20.284 23.608 36.208 45.998 41.399-1.44 3.3-5.618 11.263-12.565 12.674-8.607 1.764 23.358.428 46.163-13.178 17.519-4.611 31.938-15.849 39.77-30.513h-13.506V73.272H85.02V59.464l22.998-25.977h13.008l-19.429 27.187h6.421v-7.433l13.727-19.402v39.433h-.027zm-78.24 2.822a10.516 10.516 0 0 1-.996-4.535V44.548c0-1.613.332-3.124.996-4.535a11.66 11.66 0 0 1 2.713-3.68c1.134-1.032 2.49-1.864 4.04-2.468 1.55-.605 3.21-.908 4.982-.908h11.292c1.77 0 3.431.303 4.981.908 1.522.604 2.85 1.41 3.986 2.418l-12.26 16.303v-2.898a1.96 1.96 0 0 0-.665-1.512c-.443-.403-.996-.604-1.66-.604-.665 0-1.218.201-1.661.604a1.96 1.96 0 0 0-.664 1.512v9.071L44.364 77.606a10.556 10.556 0 0 1-.886-1.512zm35.73-4.535c0 1.613-.332 3.124-.997 4.535a11.66 11.66 0 0 1-2.712 3.68c-1.134 1.032-2.49 1.864-4.04 2.469-1.55.604-3.21.907-4.982.907H55.185c-1.77 0-3.431-.303-4.981-.907-1.55-.605-2.906-1.437-4.041-2.47a12.49 12.49 0 0 1-1.384-1.512l13.727-18.217v6.375c0 .605.222 1.109.665 1.512.442.403.996.604 1.66.604.664 0 1.218-.201 1.66-.604a1.96 1.96 0 0 0 .665-1.512V53.87L75.97 36.838c.913.932 1.66 1.99 2.214 3.175.664 1.41.996 2.922.996 4.535v27.011h.028z"
-        />
-      </symbol>
-      <symbol id="bug" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M127.88 73.143c0 1.412-.506 2.635-1.518 3.669-1.011 1.033-2.209 1.55-3.592 1.55h-17.887c0 9.296-1.783 17.178-5.35 23.645l16.609 17.044c1.011 1.034 1.517 2.257 1.517 3.67 0 1.412-.506 2.635-1.517 3.668-.958 1.033-2.155 1.55-3.593 1.55-1.438 0-2.635-.517-3.593-1.55l-15.811-16.063a15.49 15.49 0 0 1-1.196 1.06c-.532.434-1.65 1.208-3.353 2.322a50.104 50.104 0 0 1-5.192 2.974c-1.758.87-3.94 1.658-6.546 2.364-2.607.706-5.189 1.06-7.748 1.06V47.044H58.89v73.062c-2.716 0-5.417-.367-8.106-1.102-2.688-.734-5.003-1.631-6.945-2.692a66.769 66.769 0 0 1-5.268-3.179c-1.571-1.057-2.73-1.94-3.476-2.65L33.9 109.34l-14.611 16.877c-1.066 1.14-2.344 1.711-3.833 1.711-1.277 0-2.422-.434-3.434-1.304-1.012-.978-1.557-2.187-1.635-3.627-.079-1.44.333-2.705 1.236-3.794l16.129-18.51c-3.087-6.197-4.63-13.644-4.63-22.342H5.235c-1.383 0-2.58-.517-3.592-1.55S.125 74.545.125 73.132c0-1.412.506-2.635 1.518-3.668 1.012-1.034 2.21-1.55 3.592-1.55h17.887V43.939L9.308 29.833c-1.012-1.033-1.517-2.256-1.517-3.669 0-1.412.505-2.635 1.517-3.668 1.012-1.034 2.21-1.55 3.593-1.55s2.58.516 3.593 1.55l13.813 14.106h67.396l13.814-14.106c1.012-1.034 2.21-1.55 3.592-1.55 1.384 0 2.581.516 3.593 1.55 1.012 1.033 1.518 2.256 1.518 3.668 0 1.413-.506 2.636-1.518 3.67l-13.814 14.105v23.975h17.887c1.383 0 2.58.516 3.593 1.55 1.011 1.033 1.517 2.256 1.517 3.668l-.005.01zM89.552 26.175H38.448c0-7.23 2.489-13.386 7.466-18.469C50.892 2.623 56.92.082 64 .082c7.08 0 13.108 2.541 18.086 7.624 4.977 5.083 7.466 11.24 7.466 18.469z"
-        />
-      </symbol>
-    </svg>
-    <svg width="200" height="200" fill="lightblue">
-      <use xlink:href="#404" />
-    </svg>
-    <svg width="200" height="200" fill="yellow">
-      <use xlink:href="#bug" />
-    </svg>
-    <svg-icon icon-class="drag" class-name="drag-icon" />
+    <!-- 头部内容 -->
+    <el-card class="header-card">
+      <div>
+        <div class="fl headL">
+          <div class="headImg">
+            <img :src="$store.state.user.userInfo.staffPhoto">
+          </div>
+          <div class="headInfoTip">
+            <p class="firstChild">早安，{{ $store.getters.userName }}，祝你开心每一天！</p>
+            <p class="lastChild">{{ $store.getters.userName }} | {{ $store.state.user.userInfo.companyName }}-{{ $store.state.user.userInfo.departmentName }}</p>
+          </div>
+        </div>
+        <div class="fr" />
+      </div>
+    </el-card>
+    <!-- 主要内容 -->
+    <el-row type="flex" justify="space-between">
+      <!-- 左侧内容 -->
+      <el-col :span="15" style="padding-right: 26px">
+        <!-- 工作日历 -->
+        <el-card class="box-card">
+          <div slot="header" class="header">
+            <calendar />
+          </div>
+          <!-- 放置日历组件 -->
+        </el-card>
+        <!-- 公告 -->
+        <el-card class="box-card">
+          <div class="advContent">
+            <div class="title">公告</div>
+            <div class="contentItem">
+              <ul class="noticeList">
+                <li>
+                  <div class="item">
+                    <img src="@/assets/common/img.jpeg" alt="">
+                    <div>
+                      <p>
+                        <span class="col">朱继柳</span> 发布了
+                        第1期“传智大讲堂”互动讨论获奖名单公布
+                      </p>
+                      <p>2018-07-21 15:21:38</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item">
+                    <img src="@/assets/common/img.jpeg" alt="">
+                    <div>
+                      <p>
+                        <span class="col">朱继柳</span> 发布了
+                        第2期“传智大讲堂”互动讨论获奖名单公布
+                      </p>
+                      <p>2018-07-21 15:21:38</p>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item">
+                    <img src="@/assets/common/img.jpeg" alt="">
+                    <div>
+                      <p>
+                        <span class="col">朱继柳</span> 发布了
+                        第3期“传智大讲堂”互动讨论获奖名单公布
+                      </p>
+                      <p>2018-07-21 15:21:38</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <!-- 右侧内容 -->
+      <el-col :span="9">
+        <el-card class="box-card">
+          <div class="header headTit">
+            <span>流程申请</span>
+          </div>
+          <div class="sideNav">
+            <el-button class="sideBtn">加班离职</el-button>
+            <el-button class="sideBtn">请假调休</el-button>
+            <el-button class="sideBtn">审批列表</el-button>
+            <el-button class="sideBtn">我的信息</el-button>
+          </div>
+        </el-card>
+
+        <!-- 绩效指数 -->
+        <el-card class="box-card">
+          <div slot="header" class="header">
+            <span>绩效指数</span>
+          </div>
+          <!-- 放置雷达图 -->
+        </el-card>
+        <!-- 帮助连接 -->
+        <el-card class="box-card">
+          <div class="header headTit">
+            <span>帮助链接</span>
+          </div>
+          <div class="sideLink">
+            <el-row>
+              <el-col :span="8">
+                <a href="#">
+                  <span class="icon iconGuide" />
+                  <p>入门指南</p>
+                </a>
+              </el-col>
+              <el-col :span="8">
+                <a href="#">
+                  <span class="icon iconHelp" />
+                  <p>在线帮助手册</p>
+                </a>
+              </el-col>
+              <el-col :span="8">
+                <a href="#">
+                  <span class="icon iconTechnology" />
+                  <p>联系技术支持</p>
+                </a>
+              </el-col>
+            </el-row>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import calendar from './component/Calendar.vue'
 export default {
-  name: 'Dashboard'
+  name: 'Dashboard',
+  components: { calendar }
+
 }
 </script>
-<style scoped>
-.drag-icon {
-  width: 100px;
-  height: 100px;
-  color: aqua;
+
+<style lang="scss" scoped>
+.dashboard-container {
+  margin: 10px;
+  li {
+    list-style: none;
+  }
+  .headImg {
+    float: left;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #999;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  .headInfoTip {
+    padding: 25px 0 0;
+    margin-left: 120px;
+    p {
+      padding: 0 0 15px;
+      margin: 0;
+      &.firstChild {
+        font-size: 20px;
+      }
+      &.lastChild {
+        font-size: 16px;
+        color: #7f8c8d;
+      }
+    }
+  }
+}
+
+.box-card {
+  padding: 5px 10px;
+  margin-top: 20px;
+  .header {
+    span {
+      color: #2c3e50;
+      font-size: 20px;
+    }
+    .item {
+      color: #97a8be;
+      float: right;
+      padding: 3px 0;
+    }
+  }
+  .headTit {
+    span {
+      border-bottom: 4px solid #8a97f8;
+      padding-bottom: 10px;
+    }
+  }
+}
+.header-card {
+  position: relative;
+  .header {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    z-index: 1;
+  }
+}
+
+.advContent {
+  background: #fff;
+  border-radius: 5px 5px 0px 0px;
+  .title {
+    font-size: 16px;
+    padding: 20px;
+    font-weight: bold;
+    border-bottom: solid 1px #ccc;
+  }
+  .contentItem {
+    padding: 0 30px;
+    min-height: 350px;
+    .item {
+      display: flex;
+      padding: 18px 0 10px;
+      border-bottom: solid 1px #ccc;
+      .col {
+        color: #8a97f8;
+      }
+      img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      p {
+        padding: 0 0 8px;
+      }
+    }
+  }
+}
+.noticeList {
+  margin: 0;
+  padding: 0;
+}
+.sideNav,
+.sideLink {
+  padding: 30px 0 12px;
+  .sideBtn {
+    padding: 16px 26px;
+    font-size: 16px;
+    margin: 10px 5px;
+  }
+}
+.sideLink {
+  text-align: center;
+  .icon {
+    display: inline-block;
+    width: 76px;
+    height: 76px;
+    background: url("./../../assets/common/icon.png") no-repeat;
+  }
+  .iconGuide {
+    background-position: 0 0;
+  }
+  .iconHelp {
+    background-position: -224px 0;
+  }
+  .iconTechnology {
+    background-position: -460px 0;
+  }
 }
 </style>

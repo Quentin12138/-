@@ -49,6 +49,7 @@ import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import Lang from '@/components/Lang'
 import FullScreen from '@/components/FullScreen'
+import { resetRouter } from '@/router'
 export default {
   components: {
     Hamburger,
@@ -76,6 +77,7 @@ export default {
         // 清除token 然后再跳转
         this.$store.commit('user/REMOVE_TOKEN')
         this.$router.push('/login')
+        resetRouter()
         this.$message({
           type: 'success',
           message: '退出登录成功!'

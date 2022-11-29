@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
-
+import { resetRouter } from '@/router'
 const request = axios.create({
   // 项目的基地址
   // process.env.VUE_APP_BASE_URL 环境变量
@@ -65,6 +65,8 @@ request.interceptors.response.use(
     if (error.response.status === 401) {
       store.commit('user/REMOVE_TOKEN')
       router.push('./')
+      // 退出登陆的路由重置
+      resetRouter()
     }
     return Promise.reject(error)
   }

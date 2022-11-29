@@ -38,3 +38,12 @@ export const delRole = (id) => {
     method: 'DELETE'
   })
 }
+
+// 给角色分配权限
+export const assignPermission = (data) => {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'PUT',
+    data
+  })
+}

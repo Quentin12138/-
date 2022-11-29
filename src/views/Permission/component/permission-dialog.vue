@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增权限" :visible="dialogVisible" @close="close">
+  <el-dialog :title="title" :visible="dialogVisible" @close="close">
     <el-form ref="permissionRef" :model="permissionForm" :rules="permissionRules" label-width="80px">
       <el-form-item label="权限名称" prop="name">
         <el-input v-model="permissionForm.name" />
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { addPermission } from '@/api'
+import { addPermission, getPermissionDetail, updatePermission } from '@/api'
 export default {
   props: {
     dialogVisible: {
@@ -64,6 +64,11 @@ export default {
       }
     }
   },
+  computed: {
+    title() {
+      return this.permissionForm.id ? '编辑权限点' : '新增权限点'
+    }
+  },
   methods: {
     close() {
       this.$emit('close')
@@ -80,14 +85,23 @@ export default {
     submit() {
       this.$refs.permissionRef.validate(async(valid) => {
         if (!valid) return false
-        await addPermission({
-          ...this.permissionForm,
-          pid: this.pid
-        })
-        this.$message.success('新增权限成功')
+        if (this.permissionForm.id) {
+          await updatePermission(this.permissionForm)
+        } else {
+          await addPermission({
+            ...this.permissionForm,
+            type: this.type,
+            pid: this.pid
+          })
+        }
+        this.$message.success(this.tltle + '成功')
         this.close()
         this.$emit('update')
       })
+    },
+    async fetchDetail(id) {
+      const { data } = await getPermissionDetail(id)
+      this.permissionForm = data
     }
   }
 }

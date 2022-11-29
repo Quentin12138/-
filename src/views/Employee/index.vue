@@ -9,8 +9,15 @@
           </div>
         </template>
         <template #right>
-          <el-button type="danger" size="small" @click="handleDownoad">普通excel导出</el-button>
-          <el-button type="success" size="small" @click="$router.push('/import')">excel导入</el-button>
+          <!--按钮权限-->
+          <!-- 先给按钮起一个前后端约定好的名字
+          比如表格导出起名叫做aa
+          判断后端接口的返回值中是否有aa这个字段
+          如果有则说明当前用户可以操作这个按钮
+          如果没有说明当前用户没有操作按钮的权限
+          使用v- if让按钮隐藏不显示即可 -->
+          <el-button v-if="$store.state.user.userInfo.roles.points.includes('aa')" type="danger" size="small" @click="handleDownoad">普通excel导出</el-button>
+          <el-button v-access="'aa'" type="success" size="small" @click="$router.push('/import')">excel导入</el-button>
           <el-button type="primary" size="small" @click="showDialog">新增员工</el-button>
         </template>
       </PageTools>
@@ -39,7 +46,7 @@
           <el-table-column label="操作" fixed="right" width="200">
             <template #default="{row}">
               <el-button type="text" size="small" @click="toDetail(row.id)">查看</el-button>
-              <el-button type="text" size="small">分配角色</el-button>
+              <el-button type="text" size="small" @click="assignRoles(row)">分配角色</el-button>
               <el-button type="text" size="small" @click="del(row)">删除</el-button>
             </template>
           </el-table-column>
@@ -58,12 +65,23 @@
       </el-card>
     </div>
     <addEmployee :dialog-visible="dialogVisible" @close="close" @update="fetchEmpolyeeList" />
+    <el-dialog title="分配角色" :visible="assignRoleVisible" @close="assignRoleClose">
+      <el-checkbox-group v-model="checkList">
+        <el-checkbox v-for="item in roleList" :key="item.id" :label="item.id">
+          {{ item.name }}
+        </el-checkbox>
+      </el-checkbox-group>
+      <template #footer>
+        <el-button size="small" @click="assignRoleClose">取消</el-button>
+        <el-button size="small" type="primary" @click="submitRoles">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 // import PageTools from '@/components/PageTools'
-import { getEmployeeList, delEmployee } from '@/api'
+import { getEmployeeList, delEmployee, getRoleList, getUserDetailById, assignRoles } from '@/api'
 import dayjs from 'dayjs'
 import addEmployee from './components/add-employee.vue'
 export default {
@@ -84,7 +102,13 @@ export default {
         1: '正式',
         2: '非正式'
       },
-      dialogVisible: false
+      dialogVisible: false,
+      assignRoleVisible: false,
+      // 角色列表
+      roleList: [],
+      currentNode: {},
+      // 当前员工选中的角色
+      checkList: []
     }
   },
   created() {
@@ -108,7 +132,7 @@ export default {
     },
     showDialog() {
       this.dialogVisible = true
-      console.log(123)
+      console.log(this.$store.state.user.userInfo)
     },
     close() {
       this.dialogVisible = false
@@ -210,6 +234,27 @@ export default {
           id
         }
       })
+    },
+    async assignRoles(row) {
+      this.currentNode = row
+      const { data: { rows }} = await getRoleList()
+      this.roleList = rows
+      // 角色信息回显
+      const { data: { roleIds }} = await getUserDetailById(row.id)
+      this.checkList = roleIds || []
+      this.assignRoleVisible = true
+    },
+    assignRoleClose() {
+      this.assignRoleVisible = false
+    },
+    // 提交
+    async submitRoles() {
+      await assignRoles({
+        id: this.currentNode.id,
+        roleIds: this.checkList
+      })
+      this.$message.success('角色分配成功')
+      this.assignRoleClose()
     }
   }
 }

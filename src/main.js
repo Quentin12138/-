@@ -20,6 +20,9 @@ import './permission'
 
 import '@/icons' // icon
 
+// 执行全局指令注册
+import '@/directive'
+
 import componentPlugin from '@/components'
 Vue.use(componentPlugin)
 Vue.use(ElementUI)

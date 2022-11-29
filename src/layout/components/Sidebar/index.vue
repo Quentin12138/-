@@ -41,7 +41,11 @@ export default {
     ]),
     routes() {
       // this.$router.options.routes 可以拿到完整的路由表数据
-      return this.$router.options.routes
+      // this.$router.options.routes的数据不是响应式的 只会在初始化路由的时候发生一次改变
+      // 后面路由表发生变化 也不会同步改变
+      // return this.$router.options.routes
+      // 使用vuex中的嘀应式数据返回vuex中的全量路由数组
+      return this.$store.state.menu.menuList
     },
     activeMenu() {
       const route = this.$route
